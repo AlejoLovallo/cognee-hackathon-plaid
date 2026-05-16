@@ -77,3 +77,7 @@ not/
 .npmrc
 
 certs
+
+### Pycache 
+src/__pycache__/**
+src/**/*.pyc
