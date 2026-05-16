@@ -3,7 +3,7 @@
 ## Team
 
 - Team name: Banking memory
-- Participants: Mohnish SaI, Alejo Lovallo.
+- Participants: Mohnish SaI Prsad, Alejo Lovallo.
 - Wiki / project name: Banking memory
 
 ## Wiki Overview
