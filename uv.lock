@@ -664,11 +664,17 @@ name = "cognee-hackathon-plaid"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "click" },
     { name = "cognee" },
+    { name = "openai" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "cognee", specifier = ">=1.1.0" }]
+requires-dist = [
+    { name = "click", specifier = ">=8.0" },
+    { name = "cognee", specifier = ">=1.1.0" },
+    { name = "openai", specifier = ">=2.37.0" },
+]
 
 [[package]]
 name = "colorama"
