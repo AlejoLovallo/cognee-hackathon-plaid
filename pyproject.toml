@@ -10,4 +10,5 @@ dependencies = [
     "openai>=2.37.0",
     "cognee-community-vector-adapter-redis>=0.2.1",
     "dotenv>=0.9.9",
+    "plaid-python>=39.2.0",
 ]

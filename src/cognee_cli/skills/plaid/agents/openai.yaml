@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plaid"
+  short_description: "Call Plaid APIs with plaid-python"
+  default_prompt: "Use $plaid to implement a Plaid Python API call."
