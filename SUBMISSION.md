@@ -2,17 +2,17 @@
 
 ## Team
 
-- Team name:
-- Participants:
-- Wiki / project name:
+- Team name: Banking memory
+- Participants: Mohnish SaI, Alejo Lovallo.
+- Wiki / project name: Banking memory
 
 ## Wiki Overview
 
-One-paragraph description of what your LLM Wiki does and how it self-improves.
+Banking Memory is a self-improving financial knowledge wiki that ingests banking data from Plaid API, stores it in a Cognee knowledge graph with Redis vector embeddings, and automatically detects and fills knowledge gaps during queries. When a user asks a question, the system performs semantic search across stored financial data, analyzes the completeness of the answer using GPT-4o-mini as a "gap detector," and autonomously remembers missing facts to improve future responses—creating a continuously enriching knowledge base that gets smarter with every query.
 
-- Domain or data sources:
-- Primary use case:
-- What makes it stand out:
+- **Domain or data sources**: Banking and financial data via Plaid API (accounts, transactions, balances, identity, auth data)
+- **Primary use case**: AI assistants and agents querying financial information with automatic context enrichment and self-improvement
+- **What makes it stand out**: Autonomous knowledge gap detection and self-healing loop—the wiki critiques its own answers, identifies missing information, and automatically ingests improvements without human intervention. Combines Redis vector search for fast semantic retrieval with Cognee's permanent knowledge graph for durable, cross-session learning.
 
 ## The Three Operations
 
@@ -74,22 +74,7 @@ Short diagram or bullet list of components. The hackathon's core pattern is
 **Redis as session memory, distilled into Cognee's permanent knowledge graph**
 — show how your wiki uses that split.
 
-```text
-[ingest / agent turns]
-        |
-        v
-[ Redis  — session memory ]   <- hot, per-conversation
-        |
-        | distillation (what gets promoted? how?)
-        v
-[ Cognee — permanent graph ]  <- durable, cross-session
-        |
-        v
-[ recall / agent loop ]
-        |
-        v
-[ feedback -> improve ]
-```
+![Arch](./Diagram.png)
 
 ### Redis-as-session-memory
 
@@ -127,7 +112,7 @@ REDIS_URL
 # add anything else your wiki needs
 ```
 
-## Demo
+## Demo 
 
 - Live demo link (Loom, YouTube, etc.) or local instructions:
 - 3-minute pitch outline:
