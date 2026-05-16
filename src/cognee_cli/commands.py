@@ -1,10 +1,19 @@
 import asyncio
 import subprocess
 import sys
+from pathlib import Path
 
 import click
 import cognee
 from openai import OpenAI
+
+from .skills import (
+    detect_agent_dir,
+    get_skill_content,
+    install_skill,
+    list_skills,
+    skill_names,
+)
 
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -122,3 +131,109 @@ def lint(knowledge):
         click.echo(f"  Knowledge nodes returned: {count}")
         if count == 0:
             click.echo("  Warning: wiki appears empty. Run `ingest` first.")
+
+
+# ── skills commands ───────────────────────────────────────────────────────────
+
+
+@click.group("skills", help="Browse and install agent skill instructions")
+def skills():
+    """Browse and install agent skill instructions."""
+    pass
+
+
+@skills.command("list", help="List all available skills")
+def skills_list():
+    """List all available skills."""
+    skills_data = list_skills()
+
+    # Detect installed skills
+    agent_dir = detect_agent_dir()
+    installed_names: set[str] = set()
+    if agent_dir:
+        installed_names = {
+            d.name
+            for d in agent_dir.iterdir()
+            if d.is_dir() and (d / "SKILL.md").is_file()
+        }
+
+    click.echo(f"\n{len(skills_data)} Available Skills:\n")
+    for skill in skills_data:
+        status = " [installed]" if skill["name"] in installed_names else ""
+        click.echo(f"  {skill['name']}{status}")
+        if skill["description"]:
+            # Truncate long descriptions
+            desc = skill["description"]
+            if len(desc) > 100:
+                desc = desc[:97] + "..."
+            click.echo(f"    {desc}")
+        click.echo()
+
+
+@skills.command("show", help="Print the SKILL.md for a skill")
+@click.argument("skill_name", required=False)
+def skills_show(skill_name: str | None):
+    """Print the SKILL.md for a skill."""
+    available = skill_names()
+    if not skill_name:
+        raise click.UsageError(
+            "Missing skill name. Run 'wiki skills list' to see available skills."
+        )
+    skill_name = skill_name.lower()
+    if skill_name not in available:
+        raise click.UsageError(
+            f"Unknown skill: {skill_name}. Run 'wiki skills list' to see available skills."
+        )
+    content = get_skill_content(skill_name)
+    click.echo(content)
+
+
+@skills.command("install", help="Install skills into an agent skill directory")
+@click.argument("name", required=False)
+@click.option("--all", "install_all", is_flag=True, help="Install all available skills")
+@click.option(
+    "--target",
+    type=click.Path(file_okay=False, path_type=Path),
+    help="Target directory (default: auto-detect agent skill directory)",
+)
+def skills_install(
+    name: str | None,
+    install_all: bool,
+    target: Path | None,
+):
+    """Install skills into an agent skill directory."""
+    if not name and not install_all:
+        raise click.UsageError(
+            "Provide a skill name or use --all to install all skills."
+        )
+
+    # Resolve target directory
+    if target is None:
+        target = detect_agent_dir()
+        if target is None:
+            raise click.UsageError(
+                "No agent skill directory found. Use --target to specify one, e.g.:\n"
+                "  wiki skills install --all --target .claude/skills"
+            )
+
+    available = skill_names()
+
+    if install_all:
+        names = available
+    else:
+        assert name is not None  # guaranteed by the early check above
+        if name not in available:
+            raise click.BadParameter(
+                f"Unknown skill: {name}. Available: {', '.join(available)}",
+                param_hint="'NAME'",
+            )
+        names = [name]
+
+    for skill_name_val in names:
+        status = install_skill(skill_name_val, target)
+        click.echo(
+            f"  {status.capitalize()} {skill_name_val} → {target / skill_name_val}/"
+        )
+
+    click.echo(f"\n  {len(names)} skill(s) installed to {target}")
+

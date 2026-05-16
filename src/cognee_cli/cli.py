@@ -6,7 +6,7 @@ config.set_vector_db_config({
     "vector_db_provider": "redis",
     "vector_db_url": "redis://localhost:6379",
 })
-from .commands import ingest, query, lint
+from .commands import ingest, query, lint, skills
 
 
 @click.group()
@@ -17,3 +17,4 @@ def cli():
 cli.add_command(ingest)
 cli.add_command(query)
 cli.add_command(lint)
+cli.add_command(skills)
