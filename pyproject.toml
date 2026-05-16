@@ -1,49 +1,7 @@
-[tool.poetry]
-name = "fonder-llm-wiki"
-version = "1.0.0"
-description = "LLM Wiki"
-authors = ["Fonder LLC"]
-package-mode=false
-
-[tool.poetry.dependencies]
-python = ">=3.14,<3.15"
-requests = "2.32.3"
-python-dotenv = "^1.0.1"
-cognee = "1.0.9"
-redisvl = "0.18.2"
-plaid-python = "39.2.0"
-click = "8.3.3"
-jsonref = "1.1.0"
-httpx = "0.28.1"
-
-[tool.poetry.group.dev.dependencies]
-black = "^25.1.0"
-pytest = "^8.0"
-pytest-mock = "^3.14"
-
-[tool.black]
-line-length = 88
-target-version = ['py312']
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[[tool.poetry.source]]
-name = "pypi"
-priority = "primary"
+[project]
+name = "cognee-hackathon-plaid"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
