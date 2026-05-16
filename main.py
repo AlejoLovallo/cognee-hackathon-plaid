@@ -1,5 +1,13 @@
 import cognee
 import asyncio
+# from dotenv import load_dotenv
+from cognee_community_vector_adapter_redis import register
+from cognee import config
+
+config.set_vector_db_config({
+    "vector_db_provider": "redis",
+    "vector_db_url": "redis://localhost:6379",
+})
 
 async def main():
     # Create a clean slate for cognee -- reset data and system state
