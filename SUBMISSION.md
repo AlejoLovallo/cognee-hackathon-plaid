@@ -128,6 +128,5 @@ REDIS_URL
 
 ## Links
 
-- Repo:
-- Slides / writeup:
-- Anything else:
+- Repo: https://github.com/AlejoLovallo/cognee-hackathon-plaid
+- Slides / writeup: ![slides](./Banking-memory.pdf)
